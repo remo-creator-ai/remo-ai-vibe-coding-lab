@@ -5,6 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REMO AI Vibe Coding Lab | 전문직 AI 실무 마스터 클래스</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="변리사, 변호사, 의료진 등 전문직을 위한 AI 실무 마스터 클래스. 바이브코딩으로 코딩 없이 AI 자동화 툴을 만드는 법을 배웁니다. 2-4명 소규모 정예 교육.">
+    <meta name="keywords" content="AI 교육, 바이브코딩, 전문직 AI, 변리사 AI, 의료진 AI, 노코드, AI 자동화, REMO, 구글 AI">
+    <meta name="author" content="주식회사 리모">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/">
+    <meta property="og:title" content="REMO AI Vibe Coding Lab | 전문직 AI 실무 마스터 클래스">
+    <meta property="og:description"
+        content="변리사, 변호사, 의료진 등 전문직을 위한 AI 실무 마스터 클래스. 바이브코딩으로 코딩 없이 AI 자동화 툴을 만드는 법을 배웁니다.">
+    <meta property="og:image" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/">
+    <meta name="twitter:title" content="REMO AI Vibe Coding Lab | 전문직 AI 실무 마스터 클래스">
+    <meta name="twitter:description"
+        content="변리사, 변호사, 의료진 등 전문직을 위한 AI 실무 마스터 클래스. 바이브코딩으로 코딩 없이 AI 자동화 툴을 만드는 법을 배웁니다.">
+    <meta name="twitter:image" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23002D5B'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'>R</text></svg>">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -112,9 +141,11 @@
                     <div class="w-8 h-8 bg-primary-blue rounded flex items-center justify-center">
                         <span class="text-white font-bold text-xs">R</span>
                     </div>
-                    <span class="text-xl font-bold tracking-tight text-primary-blue uppercase">REMO AI Vibe Coding
-                        Lab</span>
+                    <span class="text-lg sm:text-xl font-bold tracking-tight text-primary-blue uppercase">REMO AI Vibe
+                        Coding Lab</span>
                 </div>
+
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-10">
                     <button onclick="scrollToSection('vision')"
                         class="text-slate-600 hover:text-primary-blue font-semibold text-sm">Vision</button>
@@ -124,6 +155,29 @@
                         class="text-slate-600 hover:text-primary-blue font-semibold text-sm">Special</button>
                     <button onclick="scrollToSection('apply')"
                         class="bg-primary-blue text-white px-5 py-2.5 rounded-full text-sm font-bold hover:shadow-lg transition-all">Apply
+                        Now</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
+                    <svg class="w-6 h-6 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col space-y-3">
+                    <button onclick="scrollToSection('vision'); toggleMobileMenu();"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm text-left py-2">Vision</button>
+                    <button onclick="scrollToSection('timetable'); toggleMobileMenu();"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm text-left py-2">Timetable</button>
+                    <button onclick="scrollToSection('differentiation'); toggleMobileMenu();"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm text-left py-2">Special</button>
+                    <button onclick="scrollToSection('apply'); toggleMobileMenu();"
+                        class="bg-primary-blue text-white px-5 py-2.5 rounded-full text-sm font-bold hover:shadow-lg transition-all text-center">Apply
                         Now</button>
                 </div>
             </div>
@@ -145,21 +199,13 @@
                 변리사, 변호사, 의료진 등 고도의 논리적 사고를 필요로 하는 전문가를 위한 맞춤형 커리큘럼.<br>
                 코딩의 장벽을 넘어 AI를 도구로 지배하는 바이브코딩(Vibe Coding)의 정수를 경험하십시오.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <div class="flex justify-center">
                 <div
-                    class="bg-slate-100 px-6 py-4 rounded-2xl border border-slate-200 text-left flex items-center gap-4">
-                    <span class="text-2xl">👥</span>
+                    class="bg-slate-100 px-8 py-5 rounded-2xl border border-slate-200 text-left flex items-center gap-4">
+                    <span class="text-3xl">👥</span>
                     <div>
                         <p class="text-xs text-slate-500 font-bold uppercase">Class Size</p>
-                        <p class="font-bold text-slate-800">최소 2인, 최대 4명 소규모 정예</p>
-                    </div>
-                </div>
-                <div
-                    class="bg-slate-100 px-6 py-4 rounded-2xl border border-slate-200 text-left flex items-center gap-4">
-                    <span class="text-2xl">💳</span>
-                    <div>
-                        <p class="text-xs text-slate-500 font-bold uppercase">Investment</p>
-                        <p class="font-bold text-slate-800">1인 100만원</p>
+                        <p class="font-bold text-slate-800 text-lg">최소 2인, 최대 4명 소규모 정예</p>
                     </div>
                 </div>
             </div>
@@ -372,24 +418,7 @@
                     </p>
                 </div>
 
-                <!-- Payment Methods -->
-                <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 mb-8">
-                    <h5 class="font-bold text-primary-blue mb-3 text-sm">💳 결제 방법</h5>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                        <div class="bg-white p-4 rounded-xl">
-                            <p class="font-bold text-slate-800 mb-1">카드결제</p>
-                            <p class="text-xs text-slate-600">부가세 포함 110만원</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl">
-                            <p class="font-bold text-slate-800 mb-1">법인결제</p>
-                            <p class="text-xs text-slate-600">부가세 포함 110만원</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl">
-                            <p class="font-bold text-slate-800 mb-1">현금</p>
-                            <p class="text-xs text-slate-600">100만원 (부가세 없음)</p>
-                        </div>
-                    </div>
-                </div>
+
 
                 <form id="regForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -421,17 +450,7 @@
                                 <option value="2026-02-01">2026.2.1(일) 오전 10시 - 역삼역 인근</option>
                             </select>
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Payment
-                                Method</label>
-                            <select name="payment" required
-                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all appearance-none bg-white">
-                                <option value="">결제 방법 선택</option>
-                                <option value="card">카드결제 (110만원)</option>
-                                <option value="corporate">법인결제 (110만원)</option>
-                                <option value="cash">현금 (100만원)</option>
-                            </select>
-                        </div>
+
                     </div>
                     <div class="space-y-1">
                         <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">How did you find
@@ -483,6 +502,11 @@
     </footer>
 
     <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
         function scrollToSection(id) {
             const element = document.getElementById(id);
             if (element) {
@@ -517,7 +541,6 @@
                 phone: form.phone.value,
                 email: form.email.value,
                 date: form.date.value,
-                payment: form.payment.value,
                 referral: form.referral.value,
                 timestamp: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
             };
@@ -532,32 +555,29 @@
             success.classList.add('hidden');
             error.classList.add('hidden');
 
-            // mailto: 방식으로 이메일 전송
-            // 사용자의 기본 이메일 클라이언트가 자동으로 열립니다
-            const emailSubject = `[REMO AI Vibe Coding Lab] 신규 신청 - ${formData.name}`;
-            const emailBody = `
-[REMO AI Vibe Coding Lab 신규 신청]
+            try {
+                // Google Sheets Apps Script Web App으로 데이터 전송
+                // 설정 방법은 아래 주석 참고
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyR2ZmhEutsehIjBbwUPIAUZtegil3xwWWjTjFbuLGw_89FdDiT586PiaJYjjihJ3x4ng/exec';
 
-신청자 정보:
-- 이름: ${formData.name}
-- 전화번호: ${formData.phone}
-- 이메일: ${formData.email}
-- 희망 날짜: ${formData.date}
-- 결제 방법: ${formData.payment}
-- 유입 경로: ${formData.referral}
-- 신청 시간: ${formData.timestamp}
-            `.trim();
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script는 no-cors 모드 필요
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
 
-            // mailto 링크 생성
-            const mailtoLink = `mailto:ekbae8765@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
-            // 짧은 로딩 후 이메일 클라이언트 열기
-            setTimeout(() => {
-                window.location.href = mailtoLink;
+                // no-cors 모드에서는 response를 확인할 수 없으므로 성공으로 간주
                 loading.classList.add('hidden');
                 success.classList.remove('hidden');
                 form.reset();
-            }, 800);
+            } catch (err) {
+                console.error('Error:', err);
+                loading.classList.add('hidden');
+                error.classList.remove('hidden');
+            }
         }
 
         function closeModal() {
