@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REMO AI Vibe Coding Lab | 전문직 AI 실무 마스터 클래스</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="변리사, 변호사, 의료진 등 전문직을 위한 AI 실무 마스터 클래스. 바이브코딩으로 코딩 없이 AI 자동화 툴을 만드는 법을 배웁니다. 2-4명 소규모 정예 교육.">
+    <meta name="keywords" content="AI 교육, 바이브코딩, 전문직 AI, 변리사 AI, 의료진 AI, 노코드, AI 자동화, REMO, 구글 AI">
+    <meta name="author" content="주식회사 리모">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/">
+    <meta property="og:title" content="REMO AI Vibe Coding Lab | 전문직 AI 실무 마스터 클래스">
+    <meta property="og:description"
+        content="변리사, 변호사, 의료진 등 전문직을 위한 AI 실무 마스터 클래스. 바이브코딩으로 코딩 없이 AI 자동화 툴을 만드는 법을 배웁니다.">
+    <meta property="og:image" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/">
+    <meta name="twitter:title" content="REMO AI Vibe Coding Lab | 전문직 AI 실무 마스터 클래스">
+    <meta name="twitter:description"
+        content="변리사, 변호사, 의료진 등 전문직을 위한 AI 실무 마스터 클래스. 바이브코딩으로 코딩 없이 AI 자동화 툴을 만드는 법을 배웁니다.">
+    <meta name="twitter:image" content="https://remo-creator-ai.github.io/remo-ai-vibe-coding-lab/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23002D5B'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'>R</text></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #002D5B;
+            --accent-blue: #0056b3;
+            --light-bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--light-bg);
+            color: #1e293b;
+        }
+
+        .text-primary-blue {
+            color: var(--primary-blue);
+        }
+
+        .bg-primary-blue {
+            background-color: var(--primary-blue);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 350px;
+        }
+
+        .timetable-item {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #e2e8f0;
+            padding-bottom: 2.5rem;
+        }
+
+        .timetable-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px var(--primary-blue);
+        }
+
+        .timetable-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 45, 91, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Modal for Feedback -->
+    <div id="statusModal" class="modal-overlay">
+        <div class="bg-white p-10 rounded-3xl shadow-2xl max-w-sm w-full mx-4 text-center">
+            <div id="modalLoading" class="flex flex-col items-center">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-blue mb-4"></div>
+                <p class="text-slate-600 font-medium">전송 중입니다...</p>
+            </div>
+            <div id="modalSuccess" class="hidden">
+                <div class="text-5xl mb-4 text-emerald-500">✓</div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">신청 완료</h3>
+                <p class="text-slate-600 mb-8">2026 전문직 AI 마스터 과정에 신청되셨습니다. 24시간 내 개별 안내를 드립니다.</p>
+                <button onclick="closeModal()"
+                    class="w-full bg-primary-blue text-white py-3 rounded-xl font-bold hover:opacity-90 transition-opacity">확인</button>
+            </div>
+            <div id="modalError" class="hidden">
+                <div class="text-5xl mb-4 text-rose-500">!</div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">오류 발생</h3>
+                <p class="text-slate-600 mb-8">일시적인 오류가 발생했습니다. 이메일로 직접 문의 부탁드립니다.</p>
+                <button onclick="closeModal()"
+                    class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary-blue rounded flex items-center justify-center">
+                        <span class="text-white font-bold text-xs">R</span>
+                    </div>
+                    <span class="text-lg sm:text-xl font-bold tracking-tight text-primary-blue uppercase">REMO AI Vibe
+                        Coding Lab</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-10">
+                    <button onclick="scrollToSection('vision')"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm">Vision</button>
+                    <button onclick="scrollToSection('timetable')"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm">Timetable</button>
+                    <button onclick="scrollToSection('differentiation')"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm">Special</button>
+                    <button onclick="scrollToSection('apply')"
+                        class="bg-primary-blue text-white px-5 py-2.5 rounded-full text-sm font-bold hover:shadow-lg transition-all">Apply
+                        Now</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
+                    <svg class="w-6 h-6 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col space-y-3">
+                    <button onclick="scrollToSection('vision'); toggleMobileMenu();"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm text-left py-2">Vision</button>
+                    <button onclick="scrollToSection('timetable'); toggleMobileMenu();"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm text-left py-2">Timetable</button>
+                    <button onclick="scrollToSection('differentiation'); toggleMobileMenu();"
+                        class="text-slate-600 hover:text-primary-blue font-semibold text-sm text-left py-2">Special</button>
+                    <button onclick="scrollToSection('apply'); toggleMobileMenu();"
+                        class="bg-primary-blue text-white px-5 py-2.5 rounded-full text-sm font-bold hover:shadow-lg transition-all text-center">Apply
+                        Now</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-white pt-20 pb-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-primary-blue text-xs font-bold mb-8 uppercase tracking-widest border border-blue-100">
+                <span>2026 Executive Training Program</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-primary-blue tracking-tight leading-tight mb-8">
+                고급 인력 및 전문직을 위한<br>
+                <span class="text-blue-500">AI 실무 마스터 클래스</span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-xl text-slate-500 leading-relaxed mb-12">
+                변리사, 변호사, 의료진 등 고도의 논리적 사고를 필요로 하는 전문가를 위한 맞춤형 커리큘럼.<br>
+                코딩의 장벽을 넘어 AI를 도구로 지배하는 바이브코딩(Vibe Coding)의 정수를 경험하십시오.
+            </p>
+            <div class="flex justify-center">
+                <div
+                    class="bg-slate-100 px-8 py-5 rounded-2xl border border-slate-200 text-left flex items-center gap-4">
+                    <span class="text-3xl">👥</span>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase">Class Size</p>
+                        <p class="font-bold text-slate-800 text-lg">최소 2인, 최대 4명 소규모 정예</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-32">
+
+        <!-- Vision Section -->
+        <section id="vision" class="scroll-mt-32">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-8">
+                    <h2 class="text-4xl font-bold text-primary-blue">일반 교육이 아닌,<br>전문가 전용 'AI 과외'입니다.</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed">
+                        REMO AI Vibe Coding Lab은 방대한 자료 속에서 핵심을 꿰뚫는<br>
+                        전문직의 시각에서 AI를 바라봅니다.<br><br>
+                        단순한 챗봇 활용을 넘어, 업무 문서 분석, 자동화 워크플로우 구축 등<br>
+                        <strong>최상위 전문가용 AI 마스터링</strong> 과정입니다.
+                    </p>
+                    <div class="flex items-center gap-3 text-primary-blue font-bold">
+                        <span>💬</span>
+                        <span>4주간 그룹 카톡방 운영 → 추후 사이트 내 전용 학습 커뮤니티 톡방으로 연계</span>
+                    </div>
+                </div>
+                <div class="bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
+                    <h3 class="text-center font-bold text-slate-800 mb-8">Professional AI Skills</h3>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timetable Section -->
+        <section id="timetable" class="scroll-mt-32">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-primary-blue mb-4">Detailed Timetable</h2>
+                <p class="text-slate-500">집중적인 하루, 7시간의 몰입을 통해 AI 실무 전문가로 거듭납니다.</p>
+            </div>
+
+            <!-- Course Selection Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="showTimetable('patent')" id="btn-patent"
+                    class="px-6 py-3 rounded-full font-bold transition-all bg-primary-blue text-white shadow-lg">
+                    변리사 전용
+                </button>
+                <button onclick="showTimetable('medical')" id="btn-medical"
+                    class="px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300">
+                    의료진 전용
+                </button>
+                <button onclick="showTimetable('developer')" id="btn-developer"
+                    class="px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300">
+                    고급개발자용
+                </button>
+            </div>
+
+            <!-- Patent Attorney Timetable -->
+            <div id="timetable-patent" class="max-w-4xl mx-auto">
+                <div class="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-slate-100">
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">10:00 - 11:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">1교시: 전문직 실무와 Generative AI</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">ChatGPT, Gemini, Claude의 특성 비교 및 업무별 최적 모델 선정 노하우 공유</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">11:00 - 12:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">2교시: 바이브코딩(Vibe Coding)의 이해</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">개발자처럼 생각하되 코딩하지 않는 법. PRD(제품요구사항정의서)를 업무 지시서로 활용하기</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">12:00 - 13:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">3교시: 웹 개발 프로세스 이해</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">웹과 앱의 차이, 웹 프레임워크 사용법, 웹 개발 프로세스 (기획, 프론트엔드, 백엔드, QA,
+                            배포)</p>
+                    </div>
+                    <div class="timetable-item" style="border-left-style: dashed; border-color: #cbd5e1;">
+                        <div class="flex items-center gap-8 py-2">
+                            <span class="text-slate-400 font-medium whitespace-nowrap">13:00 - 14:00</span>
+                            <span class="text-slate-400 italic">🍕 Pizza Time</span>
+                        </div>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">14:00 - 15:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">4교시: 리모의 바이브코딩 제품 소개</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">의료지식전문 챗봇사이트, 파크골프 AI 사이트, 식약처 템플릿 문서 자동화 등 바이브코딩으로 만든
+                            실제 사례 공유</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">15:00 - 16:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">5교시: 나만의 자동화 툴 기획</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">내 업무에 필요한 툴 아이디어 도출 및 PRD(제품요구사항정의서) 작성 실습</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">16:00 - 17:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">6교시: PRD 검토 및 구현 가이드</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">작성한 PRD를 함께 검토하고, 실제 구현 방향 설정 및 기술적 조언</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">17:00 - 18:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">7교시: Antigravity 시연 및 실전 구현</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">Google의 최신 AI 코딩 도구 Antigravity 시연, 실제 자동화 툴 구현 시작 및 향후
+                            학습 로드맵 안내</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Professional Timetable (Coming Soon) -->
+            <div id="timetable-medical" class="max-w-4xl mx-auto hidden">
+                <div class="bg-white p-16 rounded-3xl shadow-lg border border-slate-100 text-center">
+                    <div class="text-6xl mb-6">🏥</div>
+                    <h3 class="text-3xl font-bold text-primary-blue mb-4">의료진 전용 과정</h3>
+                    <p class="text-xl text-slate-600 mb-2">준비중입니다</p>
+                    <p class="text-slate-500">의료 전문가를 위한 맞춤형 AI 자동화 교육 과정을 준비하고 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- Advanced Developer Timetable (Coming Soon) -->
+            <div id="timetable-developer" class="max-w-4xl mx-auto hidden">
+                <div class="bg-white p-16 rounded-3xl shadow-lg border border-slate-100 text-center">
+                    <div class="text-6xl mb-6">👨‍💻</div>
+                    <h3 class="text-3xl font-bold text-primary-blue mb-4">고급개발자용 과정</h3>
+                    <p class="text-xl text-slate-600 mb-2">Claude Code 강의 준비중입니다</p>
+                    <p class="text-slate-500">개발자를 위한 고급 AI 코딩 기법 및 Claude Code 활용법을 준비하고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Differentiation Section -->
+        <section id="differentiation"
+            class="bg-primary-blue text-white rounded-[3rem] p-12 md:p-20 overflow-hidden relative">
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-4xl font-bold mb-8">차원이 다른 교육의 차별점</h2>
+                    <ul class="space-y-6">
+                        <li class="flex gap-4">
+                            <span
+                                class="bg-blue-500 w-8 h-8 rounded-full flex items-center justify-center shrink-0">1</span>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">전문직 특화 워크플로우</h4>
+                                <p class="text-blue-100 text-sm">범용 강의가 아닌, 전문직의 문서 분석 및 작성 프로세스에 완벽히 최적화된 예제를 다룹니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <span
+                                class="bg-blue-500 w-8 h-8 rounded-full flex items-center justify-center shrink-0">2</span>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">No-Code, High-Output</h4>
+                                <p class="text-blue-100 text-sm">어려운 프로그래밍 언어 대신 '논리 구조 설계'에 집중하여 학습 허들을 낮추고 결과물의 질을
+                                    높였습니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <span
+                                class="bg-blue-500 w-8 h-8 rounded-full flex items-center justify-center shrink-0">3</span>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Google 원툴로 마스터</h4>
+                                <p class="text-blue-100 text-sm">Google 하나 가입하면 그 뒤엔 일사천리. 추가 유료 툴 도입 없이 무료로 최고의 보안을 지키며
+                                    운영하는 경로를 제시합니다.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20">
+                    <h4 class="font-bold text-xl mb-6 flex items-center gap-2">
+                        <span>🎁</span> 교육 수료 시 소유하게 될 결과물
+                    </h4>
+                    <div class="space-y-4">
+                        <div
+                            class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                            <p class="font-bold mb-1">커스텀 AI 미니툴</p>
+                            <p class="text-xs text-blue-200">본인 업무에 최적화된 자동화 환경</p>
+                        </div>
+                        <div
+                            class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                            <p class="font-bold mb-1">표준 프롬프트 셋</p>
+                            <p class="text-xs text-blue-200">즉시 사용 가능한 업무용 프롬프트 라이브러리</p>
+                        </div>
+                        <div
+                            class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                            <p class="font-bold mb-1">언제든 AI로 업무툴을 만들 수 있는 스킬셋</p>
+                            <p class="text-xs text-blue-200">자신감과 마인드셋을 갖춘 AI 활용 전문가로 성장</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Application Form Section -->
+        <section id="apply" class="scroll-mt-32">
+            <div class="max-w-4xl mx-auto bg-white p-12 rounded-[3rem] shadow-2xl border border-slate-100">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-primary-blue mb-4">Registration</h2>
+                    <p class="text-slate-500 leading-relaxed">
+                        2026년 1.31(토) 또는 2.1(일) 과정 중 선택 가능합니다.<br>
+                        역삼역 인근 전문 교육장에서 오전 10시에 시작하며, 신청 시 개별 연락을 드립니다.
+                    </p>
+                </div>
+
+
+
+                <form id="regForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Name</label>
+                            <input type="text" name="name" required placeholder="성함"
+                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Phone</label>
+                            <input type="tel" name="phone" required placeholder="전화번호"
+                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Google
+                            Email</label>
+                        <input type="email" name="email" required placeholder="실무에 사용할 구글 이메일"
+                            class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Preferred
+                                Date</label>
+                            <select name="date" required
+                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all appearance-none bg-white">
+                                <option value="">희망 날짜 선택</option>
+                                <option value="2026-01-31">2026.1.31(토) 오전 10시 - 역삼역 인근</option>
+                                <option value="2026-02-01">2026.2.1(일) 오전 10시 - 역삼역 인근</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">How did you find
+                            us?</label>
+                        <input type="text" name="referral" required placeholder="지인 추천, 사이트 등"
+                            class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 mt-8">
+                        <h5 class="font-bold text-primary-blue mb-2 text-sm">💡 준비 사항 체크리스트</h5>
+                        <ul class="text-xs text-blue-700 space-y-1 list-disc pl-4">
+                            <li>개인 노트북 (Chrome 브라우저 설치 권장)</li>
+                            <li>Google 계정 (AI Studio 접근 권한 필요)</li>
+                            <li>실습에 활용할 업무 관련 샘플 데이터 (비민감성)</li>
+                        </ul>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-primary-blue text-white py-5 rounded-2xl font-bold text-xl hover:shadow-2xl transition-all active:scale-[0.98]">
+                        참가 신청 제출하기
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <span class="text-2xl font-bold text-primary-blue tracking-tighter uppercase">REMO AI Vibe Coding
+                    Lab</span>
+                <p class="mt-2 text-slate-500 font-medium">Professional AI Mastery Excellence</p>
+                <div class="mt-6 flex flex-col gap-1 text-sm text-slate-400">
+                    <p class="font-semibold text-slate-600">주식회사 리모 | 대표 배은경</p>
+                    <p>서울특별시 강남구 테헤란로 (역삼역 2번 출구 인근 교육장)</p>
+                    <p>Contact: <a href="mailto:ekbae8765@remo.re.kr"
+                            class="text-primary-blue hover:underline font-medium">ekbae8765@remo.re.kr</a></p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center md:items-end gap-2 text-slate-400 text-sm">
+                <div class="flex gap-6 mb-4">
+                    <a href="https://remo.re.kr" target="_blank"
+                        class="hover:text-primary-blue transition-colors">Website</a>
+                    <a href="#" class="hover:text-primary-blue transition-colors">Privacy Policy</a>
+                </div>
+                <p>&copy; 2026 주식회사 리모. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const headerOffset = 80;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+            }
+        }
+
+        function showTimetable(type) {
+            // Hide all timetables
+            document.getElementById('timetable-patent').classList.add('hidden');
+            document.getElementById('timetable-medical').classList.add('hidden');
+            document.getElementById('timetable-developer').classList.add('hidden');
+
+            // Reset all buttons
+            document.getElementById('btn-patent').className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
+            document.getElementById('btn-medical').className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
+            document.getElementById('btn-developer').className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
+
+            // Show selected timetable and highlight button
+            document.getElementById('timetable-' + type).classList.remove('hidden');
+            document.getElementById('btn-' + type).className = 'px-6 py-3 rounded-full font-bold transition-all bg-primary-blue text-white shadow-lg';
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = {
+                name: form.name.value,
+                phone: form.phone.value,
+                email: form.email.value,
+                date: form.date.value,
+                referral: form.referral.value,
+                timestamp: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+            };
+
+            const modal = document.getElementById('statusModal');
+            const loading = document.getElementById('modalLoading');
+            const success = document.getElementById('modalSuccess');
+            const error = document.getElementById('modalError');
+
+            modal.style.display = 'flex';
+            loading.classList.remove('hidden');
+            success.classList.add('hidden');
+            error.classList.add('hidden');
+
+            try {
+                // Google Sheets Apps Script Web App으로 데이터 전송
+                // 설정 방법은 아래 주석 참고
+                const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyR2ZmhEutsehIjBbwUPIAUZtegil3xwWWjTjFbuLGw_89FdDiT586PiaJYjjihJ3x4ng/exec';
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script는 no-cors 모드 필요
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                // no-cors 모드에서는 response를 확인할 수 없으므로 성공으로 간주
+                loading.classList.add('hidden');
+                success.classList.remove('hidden');
+                form.reset();
+            } catch (err) {
+                console.error('Error:', err);
+                loading.classList.add('hidden');
+                error.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('statusModal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['논리적 구조 설계', '실무 자동화 구축', '프롬프트 체이닝', 'AI 보안 및 Privacy', '백엔드 연동'],
+                    datasets: [{
+                        label: 'REMO Expert Class',
+                        data: [100, 95, 95, 90, 85],
+                        backgroundColor: 'rgba(0, 45, 91, 0.15)',
+                        borderColor: '#002D5B',
+                        pointBackgroundColor: '#002D5B',
+                        borderWidth: 3
+                    }, {
+                        label: '일반 입문 과정',
+                        data: [40, 30, 20, 45, 10],
+                        backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                        borderColor: '#94a3b8',
+                        pointBackgroundColor: '#94a3b8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false },
+                            pointLabels: {
+                                font: { size: 12, weight: '600', family: 'Pretendard' },
+                                color: '#475569'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 20 } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
