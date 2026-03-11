@@ -124,16 +124,15 @@ git push origin main
 - [x] 반응형 네비게이션
 - [x] 히어로 섹션
 - [x] 비전 섹션 (레이더 차트)
-- [x] 타임테이블 (변리사/의료진/개발자)
+- [x] 타임테이블 (전문직/기업AX/클로드코드/오픈클로)
 - [x] 차별점 소개
-- [x] 신청 폼 (Formspree 연동)
-- [x] 모달 피드백
+- [x] 신청 폼 (Formspree 연동 및 개인정보처리방침 동의)
+- [x] 모달 피드백 및 이미지 슬라이딩 프로모션 팝업
 - [x] 부드러운 스크롤
+- [x] Google Analytics (GA4) 및 SEO 최적화 적용
 
 ## 🌟 향후 계획
 
-- [ ] Google Analytics 추가
-- [ ] SEO 최적화
 - [ ] 다국어 지원 (영어)
 - [ ] 블로그 섹션 추가
 - [ ] 수강생 후기 섹션
@@ -143,11 +142,6 @@ git push origin main
 - **이메일**: ekbae8765@remo.re.kr
 - **웹사이트**: [remo.re.kr](https://remo.re.kr)
 - **회사**: 주식회사 리모
-
-## 📄 라이선스
-
-MIT License - 자유롭게 사용, 수정, 배포 가능합니다.
-
 ---
 
 **Made with ❤️ by REMO**
