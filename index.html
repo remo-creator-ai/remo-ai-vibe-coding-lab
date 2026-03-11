@@ -104,10 +104,79 @@
             align-items: center;
             justify-content: center;
         }
+
+        /* ── 비전문직 탭 폰트 통일 ── */
+        #timetable-openclaw p, #timetable-openclaw li,
+        #timetable-corporate p, #timetable-corporate li,
+        #timetable-claudecode p, #timetable-claudecode li {
+            font-size: 0.8125rem !important;
+            line-height: 1.6 !important;
+        }
+        #timetable-openclaw h4, #timetable-corporate h4, #timetable-claudecode h4 {
+            font-size: 0.9375rem !important;
+        }
+        #timetable-openclaw h5, #timetable-corporate h5, #timetable-claudecode h5 {
+            font-size: 0.875rem !important;
+        }
     </style>
+
 </head>
 
 <body class="antialiased">
+
+    <!-- Promo Modal (Image Slider Style) -->
+    <div id="promoModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-[90%] max-w-md mx-auto overflow-hidden relative transform transition-all duration-300 scale-100 border border-slate-100">
+            <!-- Close Button -->
+            <button onclick="closePromoModal()" class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-slate-800/20 text-white hover:bg-slate-800/40 backdrop-blur-md transition-colors">
+                <span class="sr-only">Close</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- Slider Container -->
+            <div class="relative overflow-hidden w-full aspect-[4/5] bg-slate-100">
+                <div id="promoSlider" class="flex w-[400%] h-full transition-transform duration-500 ease-in-out">
+                    <div class="w-1/4 h-full flex-shrink-0 relative">
+                        <img src="./1.png" alt="Slide 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-1/4 h-full flex-shrink-0 relative">
+                        <img src="./2.png" alt="Slide 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-1/4 h-full flex-shrink-0 relative">
+                        <img src="./3.png" alt="Slide 3" class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-1/4 h-full flex-shrink-0 relative">
+                        <img src="./4.png" alt="Slide 4" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Overlay Slider Controls (Dots inside image area) -->
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+                    <button onclick="goToPromoSlide(0)" id="promoDot0" class="w-2 h-2 rounded-full bg-white shadow-sm transition-colors"></button>
+                    <button onclick="goToPromoSlide(1)" id="promoDot1" class="w-2 h-2 rounded-full bg-white/40 shadow-sm transition-colors"></button>
+                    <button onclick="goToPromoSlide(2)" id="promoDot2" class="w-2 h-2 rounded-full bg-white/40 shadow-sm transition-colors"></button>
+                    <button onclick="goToPromoSlide(3)" id="promoDot3" class="w-2 h-2 rounded-full bg-white/40 shadow-sm transition-colors"></button>
+                </div>
+            </div>
+
+            <!-- Fixed Action Buttons -->
+            <div class="p-5 bg-white space-y-3">
+                <div class="flex gap-3">
+                    <a href="./산업맞춤형 혁신바우처 지원사업 공모안내.pdf" download="산업맞춤형 혁신바우처 지원사업 공모안내.pdf" class="flex-1 flex justify-center items-center gap-2 bg-slate-900 text-white px-4 py-3.5 rounded-xl text-[13px] font-bold hover:bg-slate-800 transition-colors shadow-md active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        공고 다운받기
+                    </a>
+                    <a href="https://forms.gle/PkBK5qoCBYjU3w1y7" target="_blank" class="flex-1 flex justify-center items-center gap-2 bg-primary-blue text-white px-4 py-3.5 rounded-xl text-[13px] font-bold hover:bg-blue-800 transition-colors shadow-md active:scale-95">
+                        📝 설문하기
+                    </a>
+                </div>
+                <!-- Bottom Action -->
+                <div class="text-center pt-1">
+                    <button onclick="closePromoModal()" class="text-[12px] text-slate-400 font-medium hover:text-slate-600 transition-colors underline underline-offset-2">오늘 하루 보지 않기 (닫기)</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal for Feedback -->
     <div id="statusModal" class="modal-overlay">
@@ -243,109 +312,592 @@
         <section id="timetable" class="scroll-mt-32">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-primary-blue mb-4">Detailed Timetable</h2>
-                <p class="text-slate-500">집중적인 하루, 7시간의 몰입을 통해 AI 실무 전문가로 거듭납니다.</p>
+                <p class="text-slate-500">더 깊이 있는 학습을 위해 총 2회차(회당 4시간) 과정으로 운영됩니다.</p>
             </div>
 
+            <!-- Course Selection Buttons -->
             <!-- Course Selection Buttons -->
             <div class="flex flex-wrap justify-center gap-4 mb-12">
                 <button onclick="showTimetable('patent')" id="btn-patent"
                     class="px-6 py-3 rounded-full font-bold transition-all bg-primary-blue text-white shadow-lg">
-                    변리사 전용
+                    전문직 실무반 (의료진/변호사/변리사)
                 </button>
-                <button onclick="showTimetable('medical')" id="btn-medical"
+                <button onclick="showTimetable('openclaw')" id="btn-openclaw"
                     class="px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300">
-                    의료진 전용
+                    OpenClaw 특별반 (AI 비서)
                 </button>
-                <button onclick="showTimetable('developer')" id="btn-developer"
+                <button onclick="showTimetable('corporate')" id="btn-corporate"
                     class="px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300">
-                    고급개발자용
+                    기업 AX 교육 (5인 이상)
+                </button>
+                <button onclick="showTimetable('claudecode')" id="btn-claudecode"
+                    class="px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300">
+                    클로드코드 (For 기획/디자인)
                 </button>
             </div>
 
             <!-- Patent Attorney Timetable -->
             <div id="timetable-patent" class="max-w-4xl mx-auto">
-                <div class="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-slate-100">
+                <div class="flex justify-center gap-2 mb-8 p-1 bg-slate-100 rounded-2xl w-fit mx-auto">
+                    <button onclick="switchPatentDay('1day')" id="btn-patent-1day"
+                        class="px-6 py-2 rounded-xl font-bold text-sm transition-all bg-white text-primary-blue shadow-sm">1일
+                        집중반</button>
+                    <button onclick="switchPatentDay('2day')" id="btn-patent-2day"
+                        class="px-6 py-2 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-primary-blue">2일
+                        심화반</button>
+                </div>
+
+                <!-- 1 Day Intensive -->
+                <div id="patent-1day" class="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-slate-100">
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">10:00 - 11:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">1교시: 전문직 실무와 Generative AI</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">1교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">전문직 실무와 Generative AI</h4>
                         </div>
                         <p class="text-slate-600 pl-0 md:pl-32">ChatGPT, Gemini, Claude의 특성 비교 및 업무별 최적 모델 선정 노하우 공유</p>
                     </div>
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">11:00 - 12:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">2교시: 바이브코딩(Vibe Coding)의 이해</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">2교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">바이브코딩(Vibe Coding)의 이해</h4>
                         </div>
                         <p class="text-slate-600 pl-0 md:pl-32">개발자처럼 생각하되 코딩하지 않는 법. PRD(제품요구사항정의서)를 업무 지시서로 활용하기</p>
                     </div>
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">12:00 - 13:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">3교시: 웹 개발 프로세스 이해</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">3교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">웹 개발 프로세스 이해</h4>
                         </div>
                         <p class="text-slate-600 pl-0 md:pl-32">웹과 앱의 차이, 웹 프레임워크 사용법, 웹 개발 프로세스 (기획, 프론트엔드, 백엔드, QA,
                             배포)</p>
                     </div>
                     <div class="timetable-item" style="border-left-style: dashed; border-color: #cbd5e1;">
                         <div class="flex items-center gap-8 py-2">
-                            <span class="text-slate-400 font-medium whitespace-nowrap">13:00 - 14:00</span>
-                            <span class="text-slate-400 italic">🍕 Pizza Time</span>
+                            <span class="text-slate-400 font-medium whitespace-nowrap">Lunch</span>
+                            <span class="text-slate-400 italic">🍱 Networking & Meal</span>
                         </div>
                     </div>
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">14:00 - 15:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">4교시: 리모의 바이브코딩 제품 소개</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">4교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">리모의 바이브코딩 제품 소개</h4>
                         </div>
-                        <p class="text-slate-600 pl-0 md:pl-32">의료지식전문 챗봇사이트, 파크골프 AI 사이트, 식약처 템플릿 문서 자동화 등 바이브코딩으로 만든
-                            실제 사례 공유</p>
+                        <p class="text-slate-600 pl-0 md:pl-32">의료지식전문 챗봇사이트, 파크골프 AI 사이트, 식약처 템플릿 문서 자동화 등 실무 사례 공유</p>
                     </div>
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">15:00 - 16:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">5교시: 나만의 자동화 툴 기획</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">5교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">나만의 자동화 툴 기획</h4>
                         </div>
                         <p class="text-slate-600 pl-0 md:pl-32">내 업무에 필요한 툴 아이디어 도출 및 PRD(제품요구사항정의서) 작성 실습</p>
                     </div>
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">16:00 - 17:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">6교시: PRD 검토 및 구현 가이드</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">6교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">PRD 검토 및 구현 가이드</h4>
                         </div>
                         <p class="text-slate-600 pl-0 md:pl-32">작성한 PRD를 함께 검토하고, 실제 구현 방향 설정 및 기술적 조언</p>
                     </div>
                     <div class="timetable-item">
                         <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
-                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">17:00 - 18:00</span>
-                            <h4 class="text-xl font-bold text-slate-900">7교시: Antigravity 시연 및 실전 구현</h4>
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">7교시</span>
+                            <h4 class="text-xl font-bold text-slate-900">Antigravity 시연 및 실전 구현</h4>
                         </div>
-                        <p class="text-slate-600 pl-0 md:pl-32">Google의 최신 AI 코딩 도구 Antigravity 시연, 실제 자동화 툴 구현 시작 및 향후
-                            학습 로드맵 안내</p>
+                        <p class="text-slate-600 pl-0 md:pl-32">Google의 최신 AI 코딩 도구 Antigravity 시연, 실제 자동화 툴 구현 시작</p>
+                    </div>
+                </div>
+
+                <!-- 2 Day Advanced -->
+                <div id="patent-2day" class="hidden grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Day 1 -->
+                    <div class="bg-white p-8 md:p-10 rounded-3xl shadow-lg border border-slate-100">
+                        <h5 class="text-blue-600 font-bold mb-6 flex items-center gap-2">
+                            <span class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">1</span> Day
+                            1: Advanced Planning & Prototyping
+                        </h5>
+                        <div class="space-y-8">
+                            <div class="timetable-item">
+                                <h4 class="font-bold text-slate-900">1-2교시: 고급 워크플로우 분석 및 프롬프트 고도화</h4>
+                                <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                    • 전문직 실무의 복잡한 예외 케이스 분석<br>
+                                    • Chain of Thought, Few-shot 패턴을 활용한 정교한 프롬프트 설계<br>
+                                    • 대규모 문서(법률/의료) 데이터 추출 및 구조화 전략
+                                </p>
+                            </div>
+                            <div class="timetable-item">
+                                <h4 class="font-bold text-slate-900">3-4교시: 인터랙티브 UI 설계 및 프로토타이핑</h4>
+                                <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                    • 단순 입력을 넘어선 대시보드형 UI 흐름 설계<br>
+                                    • Google Sheets 연동을 통한 데이터 영속성 처리 전략<br>
+                                    • 실무 투입을 위한 '프로덕션 레벨' 상세 PRD 확정
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Day 2 -->
+                    <div class="bg-slate-50 p-8 md:p-10 rounded-3xl shadow-lg border border-blue-100">
+                        <h5 class="text-blue-700 font-bold mb-6 flex items-center gap-2">
+                            <span
+                                class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center">2</span>
+                            Day 2: Implementation & Optimization
+                        </h5>
+                        <div class="space-y-8">
+                            <div class="timetable-item">
+                                <h4 class="font-bold text-slate-900">5-6교시: Antigravity 기반 풀스택 구현</h4>
+                                <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                    • Antigravity를 통한 멀티 페이지 및 복합 로직 구현<br>
+                                    • 비즈니스 로직 최적화 및 에러 핸들링 구체화<br>
+                                    • 외부 API(주소, 공공데이터 등) 연동 실무
+                                </p>
+                            </div>
+                            <div class="timetable-item">
+                                <h4 class="font-bold text-slate-900">7-8교시: 검증, 테스팅 및 최종 배포</h4>
+                                <p class="text-sm text-slate-500 mt-2 leading-relaxed">
+                                    • AI 에이전트를 활용한 툴 성능 자동 테스트 및 버그 수정<br>
+                                    • 실사용자 관점의 UI 폴리싱 및 사용성 개선<br>
+                                    • 개인/팀별 최종 결과물 시연 및 실무 투입 가이드
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Medical Professional Timetable (Coming Soon) -->
+            <!-- Medical/Professional Integrated Timetable -->
             <div id="timetable-medical" class="max-w-4xl mx-auto hidden">
-                <div class="bg-white p-16 rounded-3xl shadow-lg border border-slate-100 text-center">
-                    <div class="text-6xl mb-6">🏥</div>
-                    <h3 class="text-3xl font-bold text-primary-blue mb-4">의료진 전용 과정</h3>
-                    <p class="text-xl text-slate-600 mb-2">준비중입니다</p>
-                    <p class="text-slate-500">의료 전문가를 위한 맞춤형 AI 자동화 교육 과정을 준비하고 있습니다.</p>
+                <div class="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-slate-100">
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">10:00 - 11:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">1교시: 의료 실무와 Generative AI (보안 및 규제)</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">민감 데이터 보호를 위한 AI 활용 가이드 및 의료/법률 특화 모델 비교</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">11:00 - 12:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">2교시: 의료 논문 요약 및 데이터 전처리 자동화</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">방대한 논문 데이터에서 핵심 정보 추출 및 실무 리포트 자동 생성 노하우</p>
+                    </div>
+                    <div class="timetable-item">
+                        <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 mb-2">
+                            <span class="text-primary-blue font-bold text-lg whitespace-nowrap">12:00 - 13:00</span>
+                            <h4 class="text-xl font-bold text-slate-900">3교시: 환자 상담 보조 및 문진표 자동화</h4>
+                        </div>
+                        <p class="text-slate-600 pl-0 md:pl-32">바이브코딩으로 구축하는 간단한 환자 상담 챗봇 및 비정형 데이터 정형화 시스템</p>
+                    </div>
+                    <div class="timetable-item" style="border-left-style: dashed; border-color: #cbd5e1;">
+                        <div class="flex items-center gap-8 py-2">
+                            <span class="text-slate-400 font-medium whitespace-nowrap">13:00 - 14:00</span>
+                            <span class="text-slate-400 italic">🥗 Health Time</span>
+                        </div>
+                    </div>
+                    <!-- 이후 일정은 변리사 코스와 동일하게 바이브코딩 실습으로 구성 -->
                 </div>
             </div>
 
-            <!-- Advanced Developer Timetable (Coming Soon) -->
-            <div id="timetable-developer" class="max-w-4xl mx-auto hidden">
-                <div class="bg-white p-16 rounded-3xl shadow-lg border border-slate-100 text-center">
-                    <div class="text-6xl mb-6">👨‍💻</div>
-                    <h3 class="text-3xl font-bold text-primary-blue mb-4">고급개발자용 과정</h3>
-                    <p class="text-xl text-slate-600 mb-2">Claude Code 강의 준비중입니다</p>
-                    <p class="text-slate-500">개발자를 위한 고급 AI 코딩 기법 및 Claude Code 활용법을 준비하고 있습니다.</p>
+            <!-- OpenClaw Special Class -->
+            <div id="timetable-openclaw" class="max-w-5xl mx-auto hidden">
+                <div class="text-center mb-10">
+                    <span
+                        class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-3">Agent
+                        Bootcamp</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">나만의 AI 비서 구축 실습</h3>
+                    <p class="text-slate-500 text-sm">클라우드 AI를 <em>쓰는</em> 사람이 아니라, 내 업무를 대신 <strong>굴리는 AI 비서를
+                            운영</strong>하는 사람으로</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-blue-600 uppercase">Module 1</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">OpenClaw 개요 & 발전사</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">60일 발전 과정, KimiClaw·MaxClaw·AutoClaw 파생형
+                            완벽 비교. 로컬형·클라우드형·브라우저형 장단점</p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-blue-600 uppercase">Module 2</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">아키텍처 심층 이해</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">soul.m(판단·방향), agent.m(실행),
+                            heartbeat(생존확인). 메모리 계층, 도구 호출 구조, 장애 진단법</p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-blue-600 uppercase">Module 3</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">설치 실습 (Win/Linux/Mac)</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Windows WSL, Ubuntu systemd, Mac mini 상시
+                            서버. Python·Node·Docker 환경 최적화</p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-blue-600 uppercase">Module 4</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">모델 연결 & 비용 관리</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Claude/OpenAI/로컬 모델 연결. "비서용"과 "코딩용" 분리
+                            운영. 비용 폭주 방지</p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-purple-600 uppercase">Module 5</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">메신저 연동 (TG/Discord)</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">텔레그램 봇·토큰·명령어. 디스코드 웹훅·채널. 외부에서 비서에게 업무 지시
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-purple-600 uppercase">Module 6</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">비서 스킬: 자동화 업무</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">뉴스·경쟁사 브리핑·특허 모니터링·이메일 초안·회의록·문서 요약·자료 구조화
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-green-600 uppercase">Module 7</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">Cron 자동 루틴 설정</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">매일 7시 뉴스, 매주 동향 요약, 키워드 감시. 실패 재시도·로그·알림
+                            대응</p>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                        <span class="text-[10px] font-bold text-green-600 uppercase">Module 8</span>
+                        <h4 class="font-bold text-slate-900 text-sm mt-1 mb-2">운영 & 보안 원칙</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">API 키 관리, 개인정보 비투입, 권한 분리, 백업·업데이트. 로그 읽는
+                            법</p>
+                    </div>
+                </div>
+                <!-- Course Sessions: Basic + Advanced -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+
+                    <!-- Session 1: Basic - AI Agent 비서 운영 -->
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                        <div class="bg-blue-600 px-6 py-4 flex items-center justify-between">
+                            <div>
+                                <span class="text-blue-200 text-[10px] font-bold uppercase tracking-widest">기본반 ·
+                                    4시간</span>
+                                <h4 class="text-white font-bold text-base mt-0.5">AI Agent 비서 운영하기</h4>
+                            </div>
+                            <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full">Session
+                                1</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">OpenClaw 개요 & 설치 실습</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">아키텍처(soul.m/agent.m/heartbeat) 이해, 본인
+                                        PC 환경 직접 설치</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">AI 비서 연결 & 첫 지시</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">모델 연결(Claude/OpenAI), 텔레그램 봇 생성 및 원격 업무
+                                        지시 실습</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">나만의 자동화 업무 세팅</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">뉴스 수집, 회의록 요약, 문서 정리 — Cron 스케줄 설정까지
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">4</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">비서 3종 템플릿 적용 실습</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">CEO형·연구자형·콘텐츠형 중 선택해 내 루틴에 맞게 커스터마이징
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <p class="text-[11px] text-slate-500">수료 기준: 텔레그램에서 비서에게 업무 지시 → 결과 수신 완료</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Session 2: Advanced - Agent Team 세팅 -->
+                    <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                        <div class="bg-slate-900 px-6 py-4 flex items-center justify-between">
+                            <div>
+                                <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">심화반 · 추가
+                                    4시간</span>
+                                <h4 class="text-white font-bold text-base mt-0.5">Agent Team 자동 운영 세팅</h4>
+                            </div>
+                            <span
+                                class="bg-amber-400/20 text-amber-400 text-xs font-bold px-3 py-1 rounded-full">Session
+                                2</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">Agent Team 개념 & 역할 분리</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">Orchestrator(지시)·Worker(실행)·Monitor(감시)
+                                        구조 설계법</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">팀 간 통신 & 결과 집계 자동화</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">Agent 간 메시지 전달, 결과 취합 → 보고서 자동 생성 파이프라인
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">실무 팀 시나리오 구현</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">서치 Agent + 요약 Agent + 발송 Agent 3인팀 실습
+                                        구성</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span
+                                    class="w-6 h-6 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">4</span>
+                                <div>
+                                    <p class="font-bold text-slate-900 text-sm">에러 복구 & 운영 안정화</p>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">Agent 장애 감지, 자동 재시도, 알림 분기 처리 및 보안 운영
+                                        원칙</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-amber-400 rounded-full"></span>
+                                <p class="text-[11px] text-slate-500">수료 기준: 3-Agent 팀이 자동으로 돌아가며 결과를 디스코드에 보고</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Corporate AX Training -->
+            <div id="timetable-corporate" class="max-w-5xl mx-auto hidden">
+                <div class="text-center mb-10">
+                    <span
+                        class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-3">Enterprise
+                        AX</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">기업 AX 실전 프로그램</h3>
+                    <p class="text-slate-500 text-sm">직군별 AI 활용부터 사내 해커톤까지 — 조직 단위 AX 전환</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 mb-10">
+                    <div
+                        class="flex items-center gap-1.5 bg-slate-100 px-3 py-1.5 rounded-full text-[11px] font-bold text-slate-700">
+                        <span
+                            class="w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-[9px]">1</span>
+                        AI 기초
+                    </div>
+                    <span class="text-slate-300 self-center">→</span>
+                    <div
+                        class="flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-full text-[11px] font-bold text-blue-700">
+                        <span
+                            class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[9px]">2</span>
+                        직군별 심화
+                    </div>
+                    <span class="text-slate-300 self-center">→</span>
+                    <div
+                        class="flex items-center gap-1.5 bg-blue-100 px-3 py-1.5 rounded-full text-[11px] font-bold text-blue-800">
+                        <span
+                            class="w-5 h-5 bg-blue-700 text-white rounded-full flex items-center justify-center text-[9px]">3</span>
+                        파일럿
+                    </div>
+                    <span class="text-slate-300 self-center">→</span>
+                    <div
+                        class="flex items-center gap-1.5 bg-blue-600 px-3 py-1.5 rounded-full text-[11px] font-bold text-white">
+                        <span
+                            class="w-5 h-5 bg-white text-blue-600 rounded-full flex items-center justify-center text-[9px]">4</span>
+                        해커톤
+                    </div>
+                    <span class="text-slate-300 self-center">→</span>
+                    <div
+                        class="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-full text-[11px] font-bold text-white">
+                        <span
+                            class="w-5 h-5 bg-amber-400 text-black rounded-full flex items-center justify-center text-[9px]">5</span>
+                        PoC
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                        <span class="text-[10px] font-bold text-blue-500 uppercase">Level 1 · 전 직원 · 반일</span>
+                        <h4 class="font-bold text-slate-900 mt-1 mb-3">공통 AI 기초교육</h4>
+                        <ul class="text-[11px] text-slate-500 space-y-1.5">
+                            <li>• 생성형 AI 개요, 모델별 차이, 보안·개인정보</li>
+                            <li>• 좋은 프롬프트 구조, 문서 요약, 회의록 작성</li>
+                            <li>• 반복업무 자동화 개념 및 바이브코딩 소개</li>
+                            <li>• AI를 쓰면 안 되는 업무 구분</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                        <span class="text-[10px] font-bold text-blue-700 uppercase">Level 2 · 직군별 · 1~2회</span>
+                        <h4 class="font-bold text-slate-900 mt-1 mb-3">직군별 중급 실무교육</h4>
+                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                            <div class="bg-white p-2.5 rounded-xl border border-slate-100"><strong
+                                    class="text-blue-600">기획자</strong><br>PRD·경쟁사분석·와이어프레임</div>
+                            <div class="bg-white p-2.5 rounded-xl border border-slate-100"><strong
+                                    class="text-purple-600">디자이너</strong><br>레퍼런스·UI텍스트·시안반복</div>
+                            <div class="bg-white p-2.5 rounded-xl border border-slate-100"><strong
+                                    class="text-green-600">개발자</strong><br>Claude Code·리팩토링·테스트</div>
+                            <div class="bg-white p-2.5 rounded-xl border border-slate-100"><strong
+                                    class="text-amber-600">마케팅/영업</strong><br>제안서·CRM·세일즈이메일</div>
+                            <div class="bg-white p-2.5 rounded-xl border border-slate-100 col-span-2"><strong
+                                    class="text-red-600">운영/관리</strong> — 회의록·정책 요약·FAQ·보고서·일정 리마인드</div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <span class="text-[10px] font-bold text-slate-600 uppercase">Level 3 · 부서별 · 심화</span>
+                        <h4 class="font-bold text-slate-900 mt-1 mb-3">고급반: 부서별 파일럿 과제</h4>
+                        <ul class="text-[11px] text-slate-500 space-y-1.5">
+                            <li>• 업무 프로세스 분석 및 자동화 후보 선정</li>
+                            <li>• 사내 문서 기반 검색 시스템 기획</li>
+                            <li>• 바이브코딩 활용 업무용 에이전트 설계</li>
+                            <li>• <strong>예시:</strong> 영업 제안서, 인사 QnA, 논문 브리핑 툴</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-600 p-6 rounded-2xl text-white shadow-lg relative overflow-hidden">
+                        <div class="absolute -top-8 -right-8 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                        <span class="text-[10px] font-bold text-blue-200 uppercase relative z-10">Level 4 · 전사 ·
+                            1~2일</span>
+                        <h4 class="font-bold mt-1 mb-3 relative z-10">사내 AX 해커톤</h4>
+                        <ul class="text-[11px] text-blue-100 space-y-1.5 relative z-10">
+                            <li>• 사전 2주: 아이디어 모집 → 팀 빌딩 → 멘토 배정</li>
+                            <li>• 본행사: 문제 정의 → 프로토타입 → 최종 발표</li>
+                            <li>• 평가: 업무 임팩트·실현가능성·시간절감·확장성</li>
+                            <li>• 후속: 우수팀 PoC → 부서 적용 → 성과 측정</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-slate-900 rounded-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-white text-xs">
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10"><strong class="text-amber-400">패키지 A
+                            (4회)</strong>
+                        <p class="text-slate-400 mt-1">공통교육 1회 + 직군별 심화 2회 + 해커톤 1회</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10"><strong class="text-amber-400">패키지 B
+                            (6주)</strong>
+                        <p class="text-slate-400 mt-1">공통교육 + 실습 + 부서 컨설팅 + 해커톤 + PoC 제안서</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Claude Code Basics -->
+            <div id="timetable-claudecode" class="max-w-5xl mx-auto hidden">
+                <div class="text-center mb-10">
+                    <span class="inline-block bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-3">For 기획자 · 디자이너</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Claude Code 실무 입문</h3>
+                    <p class="text-slate-500 text-sm">개발자만 쓰는 도구? — 기획자와 디자이너가 바이브코딩으로 직접 만들고 전달한다</p>
+                </div>
+                <!-- 2-Track Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Track A: 기획자 -->
+                    <div class="rounded-3xl border border-blue-100 overflow-hidden shadow-sm">
+                        <div class="bg-blue-600 px-6 py-4 flex items-center justify-between">
+                            <div>
+                                <span class="text-blue-200 text-xs font-bold uppercase tracking-widest">기획자 트랙 · 4시간</span>
+                                <h4 class="text-white font-bold text-base mt-0.5">PRD로 화면 만들기</h4>
+                            </div>
+                            <span class="text-2xl">📋</span>
+                        </div>
+                        <div class="bg-white p-6 space-y-4">
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">Claude Code 개요 & 설치</p>
+                                    <p class="text-slate-500 mt-0.5">터미널 기반 AI 도구란 무엇인가. 기획자 시각에서의 용도 파악, Claude Code 설치 및 첫 실행</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">PRD → 화면 생성 실습</p>
+                                    <p class="text-slate-500 mt-0.5">작성한 기획서(PRD)를 넣고 랜딩페이지·FAQ·신청폼 자동 생성. 반복 수정 요청 방법</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">기획자의 바이브코딩 스킬</p>
+                                    <p class="text-slate-500 mt-0.5">작업 잘게 나누기, 입출력 명시, 에러 발생 시 대처법. 개발자 없이 수정 요청하는 법</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">기획↔개발 협업 품질 올리기</p>
+                                    <p class="text-slate-500 mt-0.5">기획 의도를 코드로 전달하는 언어 만들기. git 기본 흐름, 변경 이력 관리, 브라우저 배포</p>
+                                </div>
+                            </div>
+                            <div class="pt-3 mt-1 border-t border-slate-100 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                <p class="text-slate-500">수료: 본인이 기획한 페이지를 직접 실행 가능한 상태로 제출</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Track B: 디자이너 -->
+                    <div class="rounded-3xl border border-purple-100 overflow-hidden shadow-sm">
+                        <div class="bg-purple-600 px-6 py-4 flex items-center justify-between">
+                            <div>
+                                <span class="text-purple-200 text-xs font-bold uppercase tracking-widest">디자이너 트랙 · 4시간</span>
+                                <h4 class="text-white font-bold text-base mt-0.5">디자인을 코드로 말하다</h4>
+                            </div>
+                            <span class="text-2xl">🎨</span>
+                        </div>
+                        <div class="bg-white p-6 space-y-4">
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">디자인 가이드라인 코드화</p>
+                                    <p class="text-slate-500 mt-0.5">컬러·폰트·간격 가이드를 CSS 변수로 정리. Claude Code에 브랜드 스타일 학습시키기</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">이미지 프롬프팅 & AI 생성</p>
+                                    <p class="text-slate-500 mt-0.5">Midjourney·Gemini 이미지 프롬프트 작성법. 일관된 브랜드 스타일 이미지 반복 생성 실습</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">카드뉴스 · 콘텐츠 자동 생성</p>
+                                    <p class="text-slate-500 mt-0.5">텍스트 + 이미지 조합 카드뉴스 제작. SNS 포맷별 자동 변환, 반복 템플릿 구축</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                                <div>
+                                    <p class="font-bold text-slate-900">맞춤 스킬 & 플러그인 만들기</p>
+                                    <p class="text-slate-500 mt-0.5">자주 쓰는 디자인 작업을 Claude 커스텀 커맨드로 저장. Figma 플러그인 아이디어 → 코드화</p>
+                                </div>
+                            </div>
+                            <div class="pt-3 mt-1 border-t border-slate-100 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                <p class="text-slate-500">수료: 브랜드 스타일 카드뉴스 1세트 + 커스텀 커맨드 1개 완성</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shared Caution Box -->
+                <div class="mt-6 bg-slate-50 rounded-2xl p-5 border border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-slate-600">
+                    <div class="flex items-center gap-2"><span class="text-base">🚫</span> 기존 코드 훼손 방지</div>
+                    <div class="flex items-center gap-2"><span class="text-base">🔑</span> 시크릿 키·민감정보 금지</div>
+                    <div class="flex items-center gap-2"><span class="text-base">🧪</span> 테스트 없이 배포 금지</div>
+                    <div class="flex items-center gap-2"><span class="text-base">⚠️</span> 검토 없는 자동 수용 금지</div>
                 </div>
             </div>
         </section>
+
 
         <!-- Differentiation Section -->
         <section id="differentiation"
@@ -407,72 +959,127 @@
             </div>
         </section>
 
-        <!-- Application Form Section -->
+        <!-- Unified Contact & Application Section -->
         <section id="apply" class="scroll-mt-32">
-            <div class="max-w-4xl mx-auto bg-white p-12 rounded-[3rem] shadow-2xl border border-slate-100">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl font-bold text-primary-blue mb-4">Registration</h2>
-                    <p class="text-slate-500 leading-relaxed">
-                        2026년 1.31(토) 또는 2.1(일) 과정 중 선택 가능합니다.<br>
-                        역삼역 인근 전문 교육장에서 오전 10시에 시작하며, 신청 시 개별 연락을 드립니다.
+            <div class="max-w-6xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-16">
+                    <span
+                        class="inline-block bg-primary-blue/10 text-primary-blue px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4">Get
+                        Started</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">교육 참가 신청</h2>
+                    <p class="text-slate-500 leading-relaxed max-w-xl mx-auto">
+                        신청 후 개별 연락을 통해 상세한 상담과 일정을 안내해 드립니다.<br>
+                        역삼역 인근 전문 교육장 · 소규모 정예 운영
                     </p>
                 </div>
 
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
+                    <!-- Left: Application Form (3 cols) -->
+                    <div class="lg:col-span-3 bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-100">
+                        <form id="regForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Name</label>
+                                    <input type="text" name="name" required placeholder="성함"
+                                        class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label
+                                        class="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Phone</label>
+                                    <input type="tel" name="phone" required placeholder="전화번호"
+                                        class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Google
+                                    Email</label>
+                                <input type="email" name="email" required placeholder="실무에 사용할 구글 이메일"
+                                    class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label
+                                    class="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Interested
+                                    Course</label>
+                                <select name="course" required
+                                    class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary-blue outline-none transition-all text-slate-600">
+                                    <option value="" disabled selected>관심 과정을 선택해 주세요</option>
+                                    <option value="전문직 실무반 (1일)">전문직 실무반 - 1일 집중반</option>
+                                    <option value="전문직 실무반 (2일)">전문직 실무반 - 2일 심화반</option>
+                                    <option value="OpenClaw 특별반">OpenClaw 특별반 (AI 비서)</option>
+                                    <option value="기업 AX 교육">기업 AX 교육 (5인 이상)</option>
+                                    <option value="클로드코드 기초">클로드코드 (For 기획/디자인)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">How
+                                    did you find us?</label>
+                                <input type="text" name="referral" required placeholder="지인 추천, 검색, SNS 등"
+                                    class="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-primary-blue text-white py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all active:scale-[0.98] mt-4">
+                                참가 신청 제출하기 →
+                            </button>
+                        </form>
+                    </div>
 
-                <form id="regForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Name</label>
-                            <input type="text" name="name" required placeholder="성함"
-                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
+                    <!-- Right: Info Panel (2 cols) -->
+                    <div class="lg:col-span-2 flex flex-col gap-6">
+
+                        <!-- Checklist Card -->
+                        <div class="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-100 flex-1">
+                            <h5 class="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
+                                <span
+                                    class="w-7 h-7 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xs">💡</span>
+                                준비 사항 체크리스트
+                            </h5>
+                            <ul class="text-sm text-slate-600 space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <span
+                                        class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] mt-0.5 shrink-0">✓</span>
+                                    <span>개인 노트북 (Chrome 브라우저 설치 권장)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span
+                                        class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] mt-0.5 shrink-0">✓</span>
+                                    <span>Google 계정 (AI Studio 접근 권한 필요)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span
+                                        class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] mt-0.5 shrink-0">✓</span>
+                                    <span>실습에 활용할 업무 관련 샘플 데이터 (비민감성)</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Phone</label>
-                            <input type="tel" name="phone" required placeholder="전화번호"
-                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Google
-                            Email</label>
-                        <input type="email" name="email" required placeholder="실무에 사용할 구글 이메일"
-                            class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Preferred
-                                Date</label>
-                            <select name="date" required
-                                class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all appearance-none bg-white">
-                                <option value="">희망 날짜 선택</option>
-                                <option value="2026-01-31">2026.1.31(토) 오전 10시 - 역삼역 인근</option>
-                                <option value="2026-02-01">2026.2.1(일) 오전 10시 - 역삼역 인근</option>
-                            </select>
+
+                        <!-- Enterprise CTA Card -->
+                        <div
+                            class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden flex-1">
+                            <div class="absolute -top-12 -right-12 w-32 h-32 bg-blue-50 rounded-full blur-2xl"></div>
+                            <div class="relative z-10">
+                                <span
+                                    class="inline-block bg-primary-blue/10 text-primary-blue px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4">Enterprise</span>
+                                <h4 class="text-xl font-bold mb-2 leading-snug text-slate-900">기업 맞춤 AX 컨설팅이<br>필요하신가요?
+                                </h4>
+                                <p class="text-slate-500 text-xs leading-relaxed mb-6">부서별 자동화 설계부터 사내 AI 구축까지,<br>전문가
+                                    팀이 직접 제안합니다.</p>
+                                <div class="flex flex-col gap-3">
+                                    <a href="mailto:ekbae8765@remo.re.kr?subject=[REMO AX 교육 문의] 기업명: "
+                                        class="bg-primary-blue text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-blue-800 transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95">
+                                        📧 제안서 및 교육 문의
+                                    </a>
+
+                                </div>
+                                <p class="mt-4 text-slate-400 text-xs text-center">보통 24시간 이내 답변</p>
+                            </div>
                         </div>
 
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">How did you find
-                            us?</label>
-                        <input type="text" name="referral" required placeholder="지인 추천, 사이트 등"
-                            class="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary-blue outline-none transition-all">
-                    </div>
-                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 mt-8">
-                        <h5 class="font-bold text-primary-blue mb-2 text-sm">💡 준비 사항 체크리스트</h5>
-                        <ul class="text-xs text-blue-700 space-y-1 list-disc pl-4">
-                            <li>개인 노트북 (Chrome 브라우저 설치 권장)</li>
-                            <li>Google 계정 (AI Studio 접근 권한 필요)</li>
-                            <li>실습에 활용할 업무 관련 샘플 데이터 (비민감성)</li>
-                        </ul>
-                    </div>
-                    <button type="submit"
-                        class="w-full bg-primary-blue text-white py-5 rounded-2xl font-bold text-xl hover:shadow-2xl transition-all active:scale-[0.98]">
-                        참가 신청 제출하기
-                    </button>
-                </form>
+                </div>
             </div>
-        </section>
 
     </main>
 
@@ -518,19 +1125,47 @@
         }
 
         function showTimetable(type) {
-            // Hide all timetables
-            document.getElementById('timetable-patent').classList.add('hidden');
-            document.getElementById('timetable-medical').classList.add('hidden');
-            document.getElementById('timetable-developer').classList.add('hidden');
+            // Hide all timetables (safe null checks)
+            ['timetable-patent', 'timetable-medical', 'timetable-openclaw', 'timetable-corporate', 'timetable-claudecode'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
 
             // Reset all buttons
-            document.getElementById('btn-patent').className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
-            document.getElementById('btn-medical').className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
-            document.getElementById('btn-developer').className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
+            ['btn-patent', 'btn-openclaw', 'btn-corporate', 'btn-claudecode'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.className = 'px-6 py-3 rounded-full font-bold transition-all bg-slate-200 text-slate-600 hover:bg-slate-300';
+            });
 
             // Show selected timetable and highlight button
-            document.getElementById('timetable-' + type).classList.remove('hidden');
-            document.getElementById('btn-' + type).className = 'px-6 py-3 rounded-full font-bold transition-all bg-primary-blue text-white shadow-lg';
+            const targetTimetable = document.getElementById('timetable-' + type);
+            const targetBtn = document.getElementById('btn-' + type);
+            if (targetTimetable) targetTimetable.classList.remove('hidden');
+            if (targetBtn) targetBtn.className = 'px-6 py-3 rounded-full font-bold transition-all bg-primary-blue text-white shadow-lg';
+        }
+
+        function switchPatentDay(type) {
+            const btn1 = document.getElementById('btn-patent-1day');
+            const btn2 = document.getElementById('btn-patent-2day');
+            const day1 = document.getElementById('patent-1day');
+            const day2 = document.getElementById('patent-2day');
+
+            if (type === '1day') {
+                btn1.classList.add('bg-white', 'text-primary-blue', 'shadow-sm');
+                btn1.classList.remove('text-slate-500');
+                btn2.classList.remove('bg-white', 'text-primary-blue', 'shadow-sm');
+                btn2.classList.add('text-slate-500');
+                day1.classList.remove('hidden');
+                day2.classList.add('hidden');
+            } else {
+                btn2.classList.add('bg-white', 'text-primary-blue', 'shadow-sm');
+                btn2.classList.remove('text-slate-500');
+                btn1.classList.remove('bg-white', 'text-primary-blue', 'shadow-sm');
+                btn1.classList.add('text-slate-500');
+                day2.classList.remove('hidden');
+                day2.classList.add('grid');
+                day1.classList.add('hidden');
+            }
         }
 
         async function handleFormSubmit(event) {
@@ -540,7 +1175,6 @@
                 name: form.name.value,
                 phone: form.phone.value,
                 email: form.email.value,
-                date: form.date.value,
                 referral: form.referral.value,
                 timestamp: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
             };
@@ -584,7 +1218,70 @@
             document.getElementById('statusModal').style.display = 'none';
         }
 
+        function copyEmail() {
+            const email = 'ekbae8765@remo.re.kr';
+            navigator.clipboard.writeText(email).then(() => {
+                alert('이메일 주소가 복사되었습니다: ' + email);
+            }).catch(err => {
+                console.error('복사 실패:', err);
+            });
+        }
+
+
+        // Promo Modal Slider Logic
+        let currentPromoSlide = 0;
+        const totalPromoSlides = 4;
+        let promoAutoSlideInterval;
+
+        function updatePromoSlider() {
+            const slider = document.getElementById('promoSlider');
+            if(slider) {
+                slider.style.transform = `translateX(-${currentPromoSlide * 25}%)`;
+                for(let i=0; i<totalPromoSlides; i++) {
+                    const dot = document.getElementById(`promoDot${i}`);
+                    if(dot) {
+                        dot.className = `w-2 h-2 rounded-full shadow-sm transition-colors ${currentPromoSlide === i ? 'bg-white' : 'bg-white/40'}`;
+                    }
+                }
+            }
+        }
+
+        function nextPromoSlide() {
+            currentPromoSlide = (currentPromoSlide + 1) % totalPromoSlides;
+            updatePromoSlider();
+            resetPromoAutoSlide();
+        }
+
+        function prevPromoSlide() {
+            currentPromoSlide = (currentPromoSlide - 1 + totalPromoSlides) % totalPromoSlides;
+            updatePromoSlider();
+            resetPromoAutoSlide();
+        }
+
+        function goToPromoSlide(index) {
+            currentPromoSlide = index;
+            updatePromoSlider();
+            resetPromoAutoSlide();
+        }
+
+        function closePromoModal() {
+            const modal = document.getElementById('promoModal');
+            if(modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                clearInterval(promoAutoSlideInterval);
+            }
+        }
+
+        function resetPromoAutoSlide() {
+            clearInterval(promoAutoSlideInterval);
+            promoAutoSlideInterval = setInterval(nextPromoSlide, 3500);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            if(document.getElementById('promoModal')) {
+                promoAutoSlideInterval = setInterval(nextPromoSlide, 3500);
+            }
+
             const ctx = document.getElementById('radarChart').getContext('2d');
             new Chart(ctx, {
                 type: 'radar',
