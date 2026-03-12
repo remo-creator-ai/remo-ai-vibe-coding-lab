@@ -12,7 +12,7 @@
     <meta name="author" content="주식회사 리모">
     <meta name="robots" content="index, follow">
     <meta name="naver-site-verification" content="f3b4c107...NAVER_VERIFY_CODE...62d1c" />
-    <meta name="google-site-verification" content="Dq2a_...GOOGLE_VERIFY_CODE...FbwQy" />
+    <meta name="google-site-verification" content="qsjS3bNjERHqMk7u71RkF2SpLD-DReYT4H_k1elAmnQ" />
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PRCCTSZHXE"></script>
@@ -1039,17 +1039,15 @@
                             </div>
                             
                             <!-- Privacy Policy Consent -->
-                            <div class="pt-2">
-                                <label class="flex items-start gap-3 cursor-pointer group">
-                                    <div class="relative flex items-center justify-center mt-1">
-                                        <input type="checkbox" name="privacyConsent" required class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded bg-white checked:bg-primary-blue checked:border-primary-blue transition-all cursor-pointer">
-                                        <svg class="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none stroke-[3px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-                                    </div>
-                                    <span class="text-sm text-slate-600 leading-snug select-none group-hover:text-slate-900 transition-colors">
-                                        개인정보 수집 및 이용에 동의합니다. <br>
-                                        <button type="button" onclick="openPrivacyModal()" class="text-primary-blue underline underline-offset-2 font-medium mt-1">개인정보처리방침 보기</button>
-                                    </span>
-                                </label>
+                            <div class="pt-2 flex items-start gap-3">
+                                <div class="relative flex items-center justify-center mt-1">
+                                    <input type="checkbox" id="privacyConsent" name="privacyConsent" required class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded bg-white checked:bg-primary-blue checked:border-primary-blue transition-all cursor-pointer">
+                                    <svg class="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none stroke-[3px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <div class="text-sm text-slate-600 leading-snug">
+                                    <label for="privacyConsent" class="cursor-pointer select-none hover:text-slate-900 transition-colors">개인정보 수집 및 이용에 동의합니다.</label> <br>
+                                    <button type="button" onclick="openPrivacyModal()" class="text-primary-blue underline underline-offset-2 font-medium mt-1 hover:text-blue-800 transition-colors">개인정보처리방침 보기</button>
+                                </div>
                             </div>
 
                             <button type="submit"
